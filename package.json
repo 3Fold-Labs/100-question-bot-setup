@@ -1,11 +1,14 @@
 {
-  "name": "100-question-bot-setup",
+  "name": "ai-agent-rules",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node scripts/sync-worksheet.mjs --check && node --test",
-    "mcp": "node mcp/server.mjs",
+    "e2e": "playwright test",
     "sync": "node scripts/sync-worksheet.mjs"
   },
-  "version": "0.0.05"
+  "version": "0.0.06",
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
 }

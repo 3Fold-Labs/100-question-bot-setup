@@ -22,9 +22,13 @@ jobs:
         with:
           node-version: 24
       - run: npm test
+      - name: Stage only the worksheet
+        run: |
+          mkdir -p _site
+          cp index.html _site/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

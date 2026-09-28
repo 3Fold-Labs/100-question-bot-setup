@@ -3,6 +3,11 @@ my-agent-instructions*.md
 my-bot-instructions*.md
 my-agent-policy*.md
 my-agent-answers*.json
+claude-code-settings.json
+codex-ai-agent-rules.rules
+codex-config.toml
+gemini-ai-agent-rules.toml
+cursor-permissions.json
 node_modules/
 
 .local/

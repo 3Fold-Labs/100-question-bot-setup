@@ -7,8 +7,9 @@
 - **No em dashes (U+2014) in any file.** Use periods, commas, colons, or parentheses. A test enforces this.
 - Preserve saved answers silently. A stored answer carries into a track only where its question text is identical to a question in that track. Never reuse a stored permission for a different action.
 - Downloading a blank worksheet must preserve the current browser's answers and remove personal data from the downloaded HTML.
-- Keep optional developer integrations separate from normal setup. Text instructions express the user's policy; do not promise that they guarantee compliance.
+- Text instructions and tool settings express the user's policy; do not promise that they guarantee compliance. Tool settings are a strong guardrail, not a lock.
 - Keep personal answers, private recovery notes, and filled exports out of Git and release assets.
 - The release version lives only in `version.mjs` (`package.json` mirrors it without the leading `v`).
-- Run `npm test`. Run `npm run sync` after changing `questionnaire.mjs` or `version.mjs`. Exercise both tracks in a browser (save and reload, full and short Markdown, JSON backup and import, sections marked as not applying, blank download) before claiming release readiness. Report any verification blocker plainly.
+- Run `npm test` (no installed packages needed) and `npm run e2e` (Playwright, headless Chromium; set `PW_CHROMIUM_PATH` to use a Chromium executable you already have). Run `npm run sync` after changing `questionnaire.mjs` or `version.mjs`. The browser suite exercises both tracks (save and reload, full and compact Markdown, JSON backup and import, sections turned off, blank download, two open tabs, unreadable saved data). Report any verification blocker plainly.
+- The repository is https://github.com/3Fold-Labs/ai-agent-rules and the worksheet is published at https://3fold-labs.github.io/ai-agent-rules/. The Pages workflow publishes only `index.html`.
 - Public product documentation and release descriptions explain the current product and user workflow. Keep repair audits, implementation history, and private repository references in ignored local review notes.
