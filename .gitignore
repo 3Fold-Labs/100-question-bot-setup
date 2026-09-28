@@ -1,0 +1,8 @@
+my-permissions-answers*.json
+my-agent-instructions*.md
+my-bot-instructions*.md
+my-agent-policy*.md
+my-agent-answers*.json
+node_modules/
+
+.local/

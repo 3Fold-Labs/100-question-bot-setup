@@ -1,0 +1,11 @@
+{
+  "name": "100-question-bot-setup",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/sync-worksheet.mjs --check && node --test",
+    "mcp": "node mcp/server.mjs",
+    "sync": "node scripts/sync-worksheet.mjs"
+  },
+  "version": "0.0.05"
+}
