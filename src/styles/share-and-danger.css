@@ -1,0 +1,37 @@
+/* Share and danger */
+.share-band {
+  border: 1px dashed var(--edge-hi);
+  background: rgba(184, 145, 47, 0.08);
+}
+html[data-theme="dark"] .share-band {
+  background: rgba(255, 255, 255, 0.04);
+}
+.danger {
+  margin: 96px 0 18px;
+  border: 1px solid var(--danger-line);
+  background: var(--danger-bg);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+.danger h2 {
+  color: var(--deny);
+  font-size: 19px;
+}
+.danger .confirm {
+  border-color: var(--danger-line);
+}
+button.danger-btn {
+  color: var(--deny);
+  border-color: var(--danger-line);
+}
+button.danger-btn:hover:not(:disabled) {
+  border-color: var(--deny);
+}
+button.danger-yes {
+  background: var(--deny);
+  color: #fff;
+  border-color: var(--deny);
+}
+html[data-theme="dark"] button.danger-yes {
+  color: #171717;
+}

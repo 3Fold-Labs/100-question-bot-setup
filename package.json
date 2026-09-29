@@ -3,12 +3,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/sync-worksheet.mjs --check && node --test",
+    "build": "node scripts/build.mjs",
+    "build:check": "node scripts/build.mjs --check",
+    "test": "npm run build:check && node --test \"test/*.test.mjs\"",
     "e2e": "playwright test",
-    "sync": "node scripts/sync-worksheet.mjs"
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
-  "version": "0.0.06",
+  "version": "0.0.7",
   "devDependencies": {
-    "@playwright/test": "1.63.0"
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "esbuild": "0.28.2",
+    "eslint": "10.11.0",
+    "globals": "17.12.0",
+    "prettier": "3.9.9"
   }
 }

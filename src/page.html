@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src data:; base-uri 'none'; form-action 'none'"><title>Set the rules once: 100-Question AI Agent Setup · 3Fold Labs</title><style>
+{{styles}}
+</style><script>
+{{initial-theme}}
+</script></head>
+<body><main>
+<section class="panel js-needed" id="js-needed" role="alert">
+  <h2>Open this worksheet in a web browser</h2>
+  <p>This page is showing in a file preview, which cannot run the worksheet, so its buttons do nothing here. On a phone, the Files app, a message attachment, or an AirDrop preview all open files this way.</p>
+  <p>Use the online worksheet instead: <a href="https://3fold-labs.github.io/ai-agent-rules/">3fold-labs.github.io/ai-agent-rules</a>. On a computer, open this file with Chrome, Safari, Edge, or Firefox.</p>
+</section>
+
+<header>
+  <div class="header-top">
+    <a class="brand-mark" id="home-link" href="#start" aria-label="3Fold Labs. Go to the start page and choose a track"><img src="data:image/png;base64,{{logo}}" width="40" height="40" alt="3Fold Labs" decoding="async"><span class="brand-tag">AI Agent Permissions</span></a>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme">Dark</button>
+  </div>
+  <p class="eyebrow hero-track" id="hero-track" hidden></p>
+  <h1 id="hero-title">Set the rules once.<br>Share them with every AI agent.</h1>
+  <p id="hero-lede">100 questions decide what your AI agents can do, what needs your approval, and what is off limits. Pick the track that fits you, answer in any order, and download a policy to give any assistant or agent, for personal work or a team.</p>
+  <p class="muted">Every question shows a suggested answer you can accept or change. Your answers save in this browser only. Save them to a file to keep them.</p>
+  <div class="hero-cta">
+    <button type="button" id="cta-blank" title="Downloads an empty worksheet with both tracks. Your answers here stay as they are.">Download blank copy</button>
+  </div>
+  <p class="status" id="hero-status" role="status" aria-live="polite"></p>
+</header>
+
+
+
+<section class="panel" id="picker" aria-labelledby="picker-title">
+  <h2 id="picker-title">Who are these rules for?</h2>
+  <p class="muted">Pick one. Each track has its own 100 questions and keeps its own answers. You can do both.</p>
+  <div class="tracks">
+    <button type="button" class="track-tile" data-track="builder">
+      <small>Builder · 100 questions</small>
+      <b>I build with AI</b>
+      <span>Claude Code, Cursor, Codex, Lovable, Bolt, Replit, and other coding agents. For anyone who codes or builds with AI, from a first project to a full-time job.</span>
+      <span class="tile-go">Open the Builder track</span>
+    </button>
+    <button type="button" class="track-tile" data-track="personal">
+      <small>Personal · 100 questions</small>
+      <b>I use AI in my everyday life</b>
+      <span>Muse, ChatGPT, Claude, Gemini, Grok, and assistants that handle email, calendar, shopping, messages, and selling.</span>
+      <span class="tile-go">Open the Personal track</span>
+    </button>
+  </div>
+</section>
+
+<div id="track-view" hidden>
+  <div class="bar" id="bar">
+    <div class="bar-row">
+      <span class="bar-track"><span id="bar-track">Builder</span> track</span>
+      <button type="button" class="switch" id="switch-track">Switch to Personal</button>
+    </div>
+    <div class="bar-progress">
+      <strong class="bar-count" id="count">0 of 100 answered · 0 reviewed</strong>
+      <progress id="progress" max="100" value="0" aria-label="Questions answered"></progress>
+    </div>
+    <div class="bar-tools">
+      <button type="button" id="next-unanswered">Next unanswered</button>
+      <button type="button" id="go-downloads">Go to downloads</button>
+      <p class="bar-save" id="storage-status" role="status" aria-live="polite"><span id="storage-text">Saved in this browser</span> <button type="button" class="linkish" id="storage-backup" hidden>Save my answers to a file.</button></p>
+    </div>
+    <p class="bar-note" id="bar-note" role="status" aria-live="polite" hidden></p>
+  </div>
+
+  <section class="panel unreadable" id="unreadable" aria-labelledby="unreadable-title" hidden>
+    <h2 id="unreadable-title">Some saved answers could not be read</h2>
+    <p>Some saved answers in this browser could not be read. They are kept aside, and you can download them.</p>
+    <div class="actions">
+      <button type="button" id="unreadable-download">Download unreadable answers (.txt)</button>
+      <button type="button" id="unreadable-hide">Hide this notice</button>
+    </div>
+    <p class="status" id="unreadable-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="groups-title">
+    <p class="eyebrow" id="track-eyebrow">Builder track · 100 questions</p>
+    <h2 id="groups-title">Which parts apply to you?</h2>
+    <p class="muted">Uncheck any part that does not fit your life or work. It turns off: its questions read as Doesn’t apply in your policy, and any answers in it stay saved for when you turn it back on.</p>
+    <div class="groups" id="groups"></div>
+    <div class="suggest-row">
+      <div class="suggest-actions">
+        <button type="button" class="primary" id="suggest">Start from suggested answers</button>
+        <label class="filebutton">Load my answers from a file<input id="load-backup-top" class="visually-hidden" type="file" accept="application/json,.json"></label>
+      </div>
+      <p class="status" id="suggest-status" role="status" aria-live="polite"></p>
+    </div>
+    <div id="import-slot-top"></div>
+    <p class="muted" style="margin:10px 0 0">Suggestions fill only the questions you have not answered. Each one shows as suggested until you choose an answer or edit its notes.</p>
+    <p class="muted suggest-deny" id="suggest-deny">A suggested DENY stays a firm no until you change it.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="profile-title">
+    <h2 id="profile-title">Make it yours</h2>
+    <div class="meta">
+      <label>Project or team (optional)<input id="company" type="text" maxlength="200"></label>
+      <label>Your name or role<input id="owner" type="text" maxlength="200"></label>
+      <label>Where should your agents ask for decisions?<input id="channel" type="text" maxlength="300" placeholder="For example: the chat where I work with my main assistant"></label>
+      <label>Policy version or date<input id="version" type="text" maxlength="100" placeholder="For example: September 2026"></label>
+    </div>
+    <p class="muted" style="margin:14px 0 0">These details go at the top of your policy. Nothing on this page is sent anywhere. Anyone who uses this browser can see saved answers, so keep passwords and other secrets out of them.</p>
+  </section>
+
+  <p class="legend-line"><strong>ALLOW</strong> means act within the scope you write. <strong>ASK</strong> means get your yes first. <strong>DENY</strong> means don’t. <strong>Doesn’t apply</strong> marks a question outside your setup. Unanswered questions grant no permission.</p>
+
+  <div class="q-layout">
+    <nav id="toc" class="toc" aria-label="Question sections">
+      <button type="button" class="toc-toggle" id="toc-toggle" aria-expanded="false" aria-controls="toc-nav">Sections <span aria-hidden="true">▾</span></button>
+      <div class="toc-title">Sections</div>
+      <div id="toc-nav" class="toc-nav"></div>
+    </nav>
+    <div id="questions"></div>
+  </div>
+
+  <section class="panel" aria-labelledby="exceptions-title">
+    <h2 id="exceptions-title">Additional boundaries (optional)</h2>
+    <p class="muted">Name folders, spend caps, recipients, and other boundaries. If a rule conflicts with another rule or a boundary, the agent must stop and ask. These notes do not silently override a DENY.</p>
+    <label for="exceptions">Your additional boundaries</label>
+    <textarea id="exceptions" rows="4" maxlength="30000"></textarea>
+    <p class="muted exceptions-tools-note" id="exceptions-tools-note" hidden>Coding tool settings cannot store limits, so any text here turns every allow in them into ask. Your policy keeps your ALLOW answers and these limits.</p>
+  </section>
+
+  <section class="panel" id="export" aria-labelledby="export-title">
+    <h2 id="export-title">Download your policy</h2>
+
+    <div class="review-panel" id="review-panel" aria-labelledby="review-title">
+      <h3 id="review-title">Before you download</h3>
+      <p class="muted">Check what your agents will read. Each item opens its question.</p>
+      <div class="review-groups">
+        <details class="review-group" data-review="allowed">
+          <summary id="review-allowed-summary">What you allowed (0)</summary>
+          <p class="muted">These run without asking, within the notes you wrote.</p>
+          <ul class="diff-list review-list" id="review-allowed-list"></ul>
+        </details>
+        <details class="review-group" data-review="boundaries">
+          <summary id="review-boundaries-summary">Your additional boundaries (0)</summary>
+          <p class="review-boundaries" id="review-boundaries-text"></p>
+          <ul class="diff-list review-list"><li><a href="#exceptions" id="review-boundaries-link"><span>Edit your additional boundaries</span></a></li></ul>
+        </details>
+        <details class="review-group" data-review="unanswered">
+          <summary id="review-unanswered-summary">Unanswered (0)</summary>
+          <p class="muted">Your policy tells agents to ask you first about each of these.</p>
+          <ul class="diff-list review-list" id="review-unanswered-list"></ul>
+        </details>
+        <details class="review-group" data-review="review">
+          <summary id="review-review-summary">Suggested or needing review (0)</summary>
+          <p class="muted">Choose an answer or edit its notes to mark it reviewed.</p>
+          <ul class="diff-list review-list" id="review-review-list"></ul>
+        </details>
+      </div>
+    </div>
+
+    <div class="export-grid">
+      <div>
+        <p>Give the policy file to each AI agent you use and say: “Follow this policy.” Unanswered questions stay unresolved, never a silent yes.</p>
+        <div class="export-main">
+          <button type="button" class="primary" id="download-policy">Download my agent policy</button>
+          <button type="button" id="download-backup">Save my answers to a file</button>
+        </div>
+        <p class="muted size-line"><span id="size-full">0</span> characters in your policy. <span id="tokens-full"></span></p>
+        <details class="more-options where-to" id="where-to">
+          <summary>Where to put your policy</summary>
+          <div id="where-coding">
+            <h3>Coding agents</h3>
+            <p class="muted">Save your compact policy file in your project folder alongside your coding tool settings, then add this line to the file your agent reads at the start of every session: <code>Follow my-agent-policy-builder-compact.md before taking any action.</code></p>
+            <ul class="where-list">
+              <li><b>Claude Code:</b> add the line to <code>CLAUDE.md</code>.</li>
+              <li><b>Codex:</b> add the line to <code>AGENTS.md</code>.</li>
+              <li><b>Gemini CLI:</b> add the line to <code>GEMINI.md</code>.</li>
+              <li><b>Cursor:</b> add the line to <code>AGENTS.md</code> or to a rule in <code>.cursor/rules</code>.</li>
+            </ul>
+          </div>
+          <h3>Chat assistants</h3>
+          <ul class="where-list">
+            <li><b>ChatGPT:</b> create a Project, add your policy file to its files, and paste the quick start into the project instructions. The custom instructions box is too small for the full policy.</li>
+            <li><b>Claude:</b> create a Project, add your policy file to Project knowledge, and paste the quick start into the project instructions.</li>
+            <li><b>Gemini:</b> create a Gem, add your policy file under Knowledge, and paste the quick start into the Gem&#39;s instructions.</li>
+            <li><b>Grok:</b> create a Project on grok.com, add your policy file, and paste the quick start into the project instructions.</li>
+            <li><b>Muse:</b> Muse has no published place for instruction files yet. Paste the quick start and your compact policy at the start of a chat.</li>
+          </ul>
+          <p class="muted">The quick start is under More options. Every message in that project or Gem includes your instructions.</p>
+        </details>
+        <div id="import-slot-bottom"><div class="confirm" id="import-confirm" hidden>
+          <p id="import-confirm-text"></p>
+          <div class="actions">
+            <button type="button" id="import-yes">Replace answers</button>
+            <button type="button" id="import-no">Keep current answers</button>
+          </div>
+        </div></div>
+        <p class="status" id="notice" role="status" aria-live="polite"></p>
+        <details class="more-options" id="more-options">
+          <summary id="more-options-summary">More options</summary>
+          <div class="more-grid">
+            <div class="option-block" id="compact-block">
+              <h3>Compact policy</h3>
+              <p class="muted">The same operating rules and your Never, Ask me first, and OK lists in fewer words.</p>
+              <p class="guidance" id="policy-guidance">Use the compact policy where an agent accepts only brief instructions.</p>
+              <div class="size"><b id="size-compact">0</b><span>characters in the compact policy</span><span class="tokens" id="tokens-compact"></span></div>
+              <div class="actions"><button type="button" id="download-compact">Download compact policy</button></div>
+            </div>
+            <div class="option-block">
+              <h3>Copy policy</h3>
+              <p class="muted">Copies the full policy text, to paste into an agent’s chat or instructions.</p>
+              <div class="actions"><button type="button" id="copy-policy">Copy policy</button></div>
+              <details>
+                <summary>Review or copy the policy by hand</summary>
+                <label for="output">Your policy</label>
+                <textarea id="output" readonly></textarea>
+              </details>
+            </div>
+            <div class="option-block" id="quick-start-block">
+              <h3 id="quick-start-title">Quick start</h3>
+              <p class="muted">Send this message with the policy file attached.</p>
+              <pre class="quick-start" id="quick-start" tabindex="0" aria-labelledby="quick-start-title"></pre>
+              <div class="actions"><button type="button" id="copy-quick-start">Copy quick start</button></div>
+              <p class="status" id="quick-start-status" role="status" aria-live="polite"></p>
+            </div>
+            <div class="option-block">
+              <h3>Load my answers from a file</h3>
+              <p class="muted">Loads answers you saved to a file, or moves them from another browser, device, or copy of this worksheet.</p>
+              <div class="actions"><label class="filebutton">Load my answers from a file<input id="load-backup" class="visually-hidden" type="file" accept="application/json,.json"></label></div>
+            </div>
+            <p class="muted">Token counts are rough estimates, at about four characters per token.</p>
+          </div>
+        </details>
+      </div>
+      <aside class="files" aria-labelledby="files-title">
+        <h3 id="files-title">Where your files go</h3>
+        <div class="file"><code id="fn-policy">my-agent-policy-builder.md</code><p>Your policy. Plain text you give your agent.</p></div>
+        <div class="file"><code id="fn-backup">my-agent-answers-builder.json</code><p>Your saved answers, from Save my answers to a file, for loading them back into this worksheet. It is not meant to be read.</p></div>
+        <div class="file"><code id="fn-compact">my-agent-policy-builder-compact.md</code><p>The compact policy, under More options. Also plain text for your agent.</p></div>
+        <div class="file"><code id="fn-blank">ai-agent-rules.html</code><p>The blank worksheet with both tracks. It holds no answers, so it is safe to share.</p></div>
+        <h4>Where they land</h4>
+        <p>Your browser’s downloads folder, usually Downloads. On iPhone, open the Files app and look in Downloads. This page cannot choose the location.</p>
+        <h4>Give the policy to an agent</h4>
+        <p>Upload the file or paste its text into your agent’s chat or instructions, then send the quick start from More options.</p>
+        <h4>Your answers</h4>
+        <p>They save automatically, but only in this browser on this device. Clearing your browser data erases them. The website and a downloaded copy of this page keep separate answers. Save your answers to a file in one and load them from that file in the other.</p>
+      </aside>
+    </div>
+
+    <div class="export-more">
+      <div class="export-block" id="tool-settings" aria-labelledby="tool-settings-title" hidden>
+        <h3 id="tool-settings-title">Coding tool settings</h3>
+        <p class="coverage" id="tool-coverage"></p>
+        <p>Coding tools can apply part of your policy themselves. Rules in a tool’s settings are not part of your agent’s instructions, and every answer also stays in your policy.</p>
+        <p class="muted">Tool settings are a strong guardrail, not a lock. A tool can miss a command written another way, for example with its options in a different order or wrapped in <code>sh -c</code>, so your policy still applies.</p>
+        <p class="tool-pick-title" id="tool-pick-title">Which coding tool do you use?</p>
+        <div class="tool-choices" id="tool-choices" role="radiogroup" aria-labelledby="tool-pick-title">
+          <label class="tool-choice"><input type="radio" name="coding-tool" value="claude">Claude Code</label>
+          <label class="tool-choice"><input type="radio" name="coding-tool" value="codex">Codex</label>
+          <label class="tool-choice"><input type="radio" name="coding-tool" value="gemini">Gemini CLI</label>
+          <label class="tool-choice"><input type="radio" name="coding-tool" value="cursor">Cursor</label>
+          <label class="tool-choice"><input type="radio" name="coding-tool" value="none">None</label>
+        </div>
+        <p class="muted" id="tool-pick-hint">Choose your tool to see its files, where to save them, and the rules to add.</p>
+
+        <section class="tool-tile" data-tool="claude" aria-labelledby="tool-claude-title" hidden>
+          <h4 id="tool-claude-title">Claude Code</h4>
+          <p><span class="tool-label">Save it as</span><code>.claude/settings.json</code> in your project folder.</p>
+          <p class="tool-update-lead" data-update-lead="claude"><span class="tool-label">Already have that file?</span>Add these three permission lists to its <code>permissions</code> instead of replacing the file, so your other settings stay.</p>
+          <div class="tool-rule-block" data-remove="claude" hidden>
+            <p><span class="tool-label">Remove these rules</span></p>
+            <pre class="snippet" id="remove-claude" tabindex="0" aria-label="Claude Code rules to remove"></pre>
+            <div class="tool-buttons"><button type="button" class="tool-copy" data-snippet="claude" data-part="remove">Copy rules to remove</button></div>
+          </div>
+          <div class="tool-rule-block">
+            <p><span class="tool-label">Add these rules</span></p>
+            <pre class="snippet" id="snippet-claude" tabindex="0" aria-label="Claude Code rules to add"></pre>
+          </div>
+          <p class="muted" data-same="claude" hidden>These are the rules you last said are in your file.</p>
+          <div class="tool-buttons">
+            <button type="button" class="tool-copy" data-snippet="claude" data-part="add">Copy rules</button>
+            <button type="button" class="tool-download" data-file="claude">Download claude-code-settings.json (new file)</button>
+          </div>
+          <div class="tool-buttons">
+            <button type="button" class="tool-confirm" data-confirm="claude" hidden>I've added these rules</button>
+          </div>
+          <p><span class="tool-label">Check it loaded</span><span id="tool-claude-check">Run <code>/permissions</code> in Claude Code. Your allow, ask, and deny rules are listed there.</span></p>
+          <p class="tool-covers" data-covers="claude"></p>
+        </section>
+        <section class="tool-tile" data-tool="codex" aria-labelledby="tool-codex-title" hidden>
+          <h4 id="tool-codex-title">Codex</h4>
+          <p><span class="tool-label">Save them as</span><code>.codex/rules/ai-agent-rules.rules</code> and <code>.codex/config.toml</code> in your project folder. Codex loads them when you trust the project. The rules file also works in <code>~/.codex/rules/</code>.</p>
+          <p><span class="tool-label">Updating your rules file?</span>The rules file holds only these rules. Replace the whole file with the new download or with these rules. Never add them to the end of the file: when two rules match a command, the stricter one applies.</p>
+          <pre class="snippet" id="snippet-codexRules" tabindex="0" aria-label="Codex rules"></pre>
+          <p><span class="tool-label">Already have a config.toml?</span>Set these two lines in it.</p>
+          <pre class="snippet" id="snippet-codexConfig" tabindex="0" aria-label="Codex config lines"></pre>
+          <div class="tool-buttons">
+            <button type="button" class="tool-copy" data-snippet="codexRules" data-part="add">Copy rules</button>
+            <button type="button" class="tool-copy" data-snippet="codexConfig" data-part="add">Copy config lines</button>
+            <button type="button" class="tool-download" data-file="codexRules">Download codex-ai-agent-rules.rules</button>
+            <button type="button" class="tool-download" data-file="codexConfig">Download codex-config.toml (new file)</button>
+          </div>
+          <div class="tool-buttons">
+            <button type="button" class="tool-confirm" data-confirm="codex" hidden>I've replaced the file</button>
+          </div>
+          <p><span class="tool-label">Check it loaded</span>Run <code id="tool-codex-check">codex execpolicy check --pretty --rules .codex/rules/ai-agent-rules.rules -- git push --force</code> and read the decision it prints<span id="tool-codex-expect"></span>.</p>
+          <p class="tool-covers" data-covers="codex"></p>
+        </section>
+        <section class="tool-tile" data-tool="gemini" aria-labelledby="tool-gemini-title" hidden>
+          <h4 id="tool-gemini-title">Gemini CLI</h4>
+          <p><span class="tool-label">Save it as</span><code>~/.gemini/policies/ai-agent-rules.toml</code> in your home folder.</p>
+          <p><span class="tool-label">Updating that file?</span>It holds only these rules. Replace the whole file with the new download or with these rules. Never add them to the end of the file: when two rules match a command, the stricter one applies.</p>
+          <pre class="snippet" id="snippet-gemini" tabindex="0" aria-label="Gemini CLI rules"></pre>
+          <div class="tool-buttons">
+            <button type="button" class="tool-copy" data-snippet="gemini" data-part="add">Copy rules</button>
+            <button type="button" class="tool-download" data-file="gemini">Download gemini-ai-agent-rules.toml</button>
+          </div>
+          <div class="tool-buttons">
+            <button type="button" class="tool-confirm" data-confirm="gemini" hidden>I've replaced the file</button>
+          </div>
+          <p><span class="tool-label">Check it loaded</span><span id="tool-gemini-check">Gemini CLI reads every .toml file in <code>~/.gemini/policies/</code> when it starts.</span></p>
+          <p class="tool-covers" data-covers="gemini"></p>
+        </section>
+        <section class="tool-tile" data-tool="cursor" aria-labelledby="tool-cursor-title" hidden>
+          <h4 id="tool-cursor-title">Cursor</h4>
+          <p class="tool-guidance" id="tool-cursor-guidance">Guidance only. Cursor applies these instructions only in Auto-review mode and does not treat them as security.</p>
+          <p><span class="tool-label">Save it as</span><code>.cursor/permissions.json</code> in your project folder. This file applies to the Cursor editor. The Cursor CLI has its own permissions.</p>
+          <p class="tool-update-lead" data-update-lead="cursor"><span class="tool-label">Already have that file?</span>Add this allowlist and these instructions to it instead of replacing it.</p>
+          <div class="tool-rule-block" data-remove="cursor" hidden>
+            <p><span class="tool-label">Remove these rules</span></p>
+            <pre class="snippet" id="remove-cursor" tabindex="0" aria-label="Cursor rules to remove"></pre>
+            <div class="tool-buttons"><button type="button" class="tool-copy" data-snippet="cursor" data-part="remove">Copy rules to remove</button></div>
+          </div>
+          <div class="tool-rule-block">
+            <p><span class="tool-label">Add these rules</span></p>
+            <pre class="snippet" id="snippet-cursor" tabindex="0" aria-label="Cursor rules to add"></pre>
+          </div>
+          <p class="muted" data-same="cursor" hidden>These are the rules you last said are in your file.</p>
+          <div class="tool-buttons">
+            <button type="button" class="tool-copy" data-snippet="cursor" data-part="add">Copy rules</button>
+            <button type="button" class="tool-download" data-file="cursor">Download cursor-permissions.json (new file)</button>
+          </div>
+          <div class="tool-buttons">
+            <button type="button" class="tool-confirm" data-confirm="cursor" hidden>I've added these rules</button>
+          </div>
+          <p><span class="tool-label">Check it loaded</span><span id="tool-cursor-check">In Cursor Settings, choose Auto-review as the Run Mode. The terminal allowlist there shows the file’s commands.</span></p>
+          <p class="tool-covers" data-covers="cursor">Cursor reads these rules as guidance, so they do not count as backing any answer.</p>
+        </section>
+        <section class="tool-tile" data-tool="none" aria-label="No coding tool" hidden>
+          <p>Your policy works on its own. Every answer is in it as instructions for your agent.</p>
+        </section>
+
+        <div class="tool-compact" id="tool-compact" hidden>
+          <p>Give your agent this compact policy together with the tool file.</p>
+          <div class="tool-buttons"><button type="button" id="tool-download-compact">Download compact policy</button></div>
+        </div>
+
+        <div class="tool-check" id="tool-check" hidden>
+          <h4>Try it</h4>
+          <p>Ask your agent to run <code id="tool-check-command"></code>. The tool should block it. The command is harmless if it runs.</p>
+        </div>
+        <div class="coverage-lists">
+          <details class="coverage-detail">
+            <summary id="tool-backed-summary">Backed by tool rules</summary>
+            <p class="muted">Each of these has a rule in Claude Code, Codex, and Gemini CLI, and no notes. It also stays in your policy.</p>
+            <ul class="rule-list" id="tool-backed-list"></ul>
+          </details>
+          <details class="coverage-detail">
+            <summary id="tool-instructions-summary">Instructions only</summary>
+            <p class="muted">These rely on your policy. Some also get a rule that covers only some forms of the action (partial) or cannot hold your notes.</p>
+            <ul class="rule-list" id="tool-instructions-list"></ul>
+          </details>
+        </div>
+        <p class="status" id="tool-status" role="status" aria-live="polite"></p>
+      </div>
+
+      <p class="muted" id="personal-tools-note" hidden>Your Personal rules stay as instructions in your policy, because everyday assistants do not accept permission files.</p>
+
+      <div class="export-block" id="test-agent" aria-labelledby="test-agent-title">
+        <h3 id="test-agent-title">Check how your agent reads your rules</h3>
+        <p class="muted">After your agent reads your policy, ask it these questions. Its answers show how it understands your rules, not a guarantee of how it will act. Each question comes from your own answers, with your notes when you wrote any, and shows what your policy expects.</p>
+        <ol class="test-list" id="test-list"></ol>
+        <p class="muted" id="test-empty" hidden></p>
+      </div>
+
+      <div class="export-block" id="both-tracks" aria-labelledby="both-tracks-title" hidden>
+        <h3 id="both-tracks-title">Finished both tracks?</h3>
+        <p>Give each agent the policy for the work it does. An agent that does both gets both files. When two answers differ, the stricter one applies.</p>
+        <p class="muted" id="both-tracks-summary"></p>
+        <ul class="diff-list" id="both-tracks-list"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel share-band" id="share-blank" aria-labelledby="share-title">
+    <h2 id="share-title">Share the blank, not your answers.</h2>
+    <p>Send someone the empty worksheet. It has both tracks, and they choose ALLOW, ASK, or DENY for their own agents. Your answers stay in this browser.</p>
+    <div class="actions">
+      <button type="button" id="share-blank-btn">Get a blank copy to share</button>
+      <button type="button" id="copy-link">Copy link</button>
+    </div>
+    <label class="share-link" id="share-link-box" hidden>Link to the worksheet<input type="text" id="share-link-text" readonly value="https://3fold-labs.github.io/ai-agent-rules/"></label>
+    <p class="status" id="share-status" role="status" aria-live="polite"></p>
+    <p class="muted">No account. No cloud required. Keep secrets out of your answers.</p>
+  </section>
+
+  <section class="danger" id="danger" aria-labelledby="danger-title">
+    <h2 id="danger-title">Clear this track</h2>
+    <p class="muted" id="clear-text">Removes every Builder track answer, note, section choice, profile field, and exception saved in this browser. Your other track and your downloaded files stay as they are.</p>
+    <button type="button" class="danger-btn" id="clear-answers">Clear Builder answers</button>
+    <div class="confirm" id="clear-confirm" hidden>
+      <p id="clear-confirm-text"></p>
+      <div class="actions">
+        <button type="button" class="danger-yes" id="clear-yes">Yes, clear Builder answers</button>
+        <button type="button" id="clear-no">Keep my answers</button>
+      </div>
+    </div>
+    <p class="status" id="clear-status" role="status" aria-live="polite"></p>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-brand"><img src="data:image/png;base64,{{logo}}" alt="3Fold Labs" width="36" height="36" decoding="async"><span id="footer-name">100-Question AI Agent Setup · 3Fold Labs</span></div>
+  <p class="legal">This worksheet and the files it produces do not control any assistant and do not guarantee that any bot will follow these rules, ask first, or refuse an action. The software is provided as is, without warranty. To the maximum extent permitted by law, 3Fold Labs, LLC disclaims all liability for any claim, damage, or loss arising from use of this release, including any act or omission by any assistant or agent. You use it at your own risk.</p>
+</footer>
+</main><button class="scroll-ring" id="scroll-ring" type="button" aria-label="Back to top. Press and hold to jump to bottom." title="Click: top · Hold: bottom"><svg viewBox="0 0 60 60" aria-hidden="true"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" id="scroll-ring-fill" cx="30" cy="30" r="26" pathLength="100"/><path class="arrow" d="M30 19.5v21M25 24.5l5-5 5 5M25 35.5l5 5 5-5"/></svg></button>
+<script>
+{{app}}</script>
+</body></html>

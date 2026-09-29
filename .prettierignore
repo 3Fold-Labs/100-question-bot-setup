@@ -1,0 +1,10 @@
+# Generated from src/ by scripts/build.mjs.
+index.html
+# The markup template holds the page's copy verbatim. Prettier's HTML printer rewraps text inside elements, which
+# changes the shipped text, so the template keeps its hand-written layout.
+src/page.html
+# Question data stays dense, one question per line, so wording edits review as one-line diffs. ESLint still checks it.
+src/core/questionnaire.mjs
+node_modules/
+package-lock.json
+.local/

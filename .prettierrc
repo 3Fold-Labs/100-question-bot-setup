@@ -1,0 +1,8 @@
+{
+  "singleQuote": true,
+  "bracketSpacing": false,
+  "printWidth": 120,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "overrides": [{"files": "*.css", "options": {"singleQuote": false}}]
+}

@@ -11,17 +11,29 @@ concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # The worksheet publishes only after the unit and browser tests pass for this commit.
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run build:check
       - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e
+  deploy:
+    needs: test
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Stage only the worksheet
         run: |
           mkdir -p _site

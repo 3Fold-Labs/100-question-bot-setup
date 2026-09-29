@@ -11,3 +11,4 @@ cursor-permissions.json
 node_modules/
 
 .local/
+.DS_Store
